@@ -112,7 +112,7 @@ Communities: Dense subgraphs
 • Fraud Rate >50%: Investigate all
 • Fraud Rate 20-50%: Review leaders
 • Fraud Rate <20%: Monitor
-                            "", id="pattern-legend")
+                            """, id="pattern-legend")
                 
                 # Tab 4: Node Explorer
                 with TabPane("Node Explorer", id="tab-explorer"):
