@@ -108,7 +108,7 @@ Available Features:
 • Interactive node explorer
 
 Press 'G' to launch the graph analysis interface.
-            "", id="help-text")
+            """, id="help-text")
         
         yield Footer()
     
