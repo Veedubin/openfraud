@@ -108,6 +108,9 @@ The `openfraud` agent persona (`.opencode/agents/openfraud.md`) has permission t
 ## Review Notes
 
 - **2025-04-16**: OpenCode plugin v1 created at `.opencode/plugins/openfraud/`. Python CLI wrappers added in `openfraud/cli/`. Agent persona `openfraud.md` active. Plugin registered in `opencode.json`.
+- **2025-04-16**: Public release repo created at https://github.com/Veedubin/openfraud with CI/CD pipeline.
+- **2025-04-16**: OpenFraud v0.1.0 published to PyPI (`pip install openfraud`).
+- **2025-04-16**: Fixed unterminated triple-quoted strings in `openfraud/tui/app.py` and `openfraud/tui/graph_screen.py`.
 - The Boomerang Protocol enforces that forensic hard flags always override ML predictions.
 - Memgraph must be running for graph tools to work.
 - TUI is built with [Textual](https://textual.textualize.io/).
