@@ -1,0 +1,99 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "openfraud"
+version = "0.1.0"
+description = "Extensible fraud detection framework with multi-agent AI"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+keywords = ["fraud", "detection", "ml", "graph", "analysis"]
+authors = [
+    { name = "OpenFraud Contributors" }
+]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "numpy>=1.24.0",
+    "pandas>=2.0.0",
+    "pyarrow>=14.0.0",
+    "scikit-learn>=1.3.0",
+    "lightgbm>=4.0.0",
+    "memgraph-toolbox>=0.1.9",
+    "neo4j>=5.0.0",
+    "duckdb>=0.9.0",
+    "textual>=0.47.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+    "jupyter>=1.0.0",
+    "notebook>=7.0.0",
+]
+viz = [
+    "streamlit>=1.28.0",
+    "plotly>=5.18.0",
+    "matplotlib>=3.8.0",
+    "seaborn>=0.13.0",
+]
+all = [
+    "openfraud[dev,viz]",
+    "optuna>=3.4.0",
+    "xgboost>=2.0.0",
+    "catboost>=1.2.0",
+]
+
+[project.scripts]
+openfraud = "openfraud.tui.app:main"
+
+[project.urls]
+Homepage = "https://github.com/Veedubin/openfraud"
+Documentation = "https://github.com/Veedubin/openfraud#readme"
+Repository = "https://github.com/Veedubin/openfraud"
+Issues = "https://github.com/Veedubin/openfraud/issues"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+select = [
+    "E",   # pycodestyle errors
+    "F",   # Pyflakes
+    "I",   # isort
+    "N",   # pep8-naming
+    "W",   # pycodestyle warnings
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "SIM", # flake8-simplify
+]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"

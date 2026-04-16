@@ -1,0 +1,11 @@
+{
+  "name": "openfraud",
+  "version": "0.1.0",
+  "description": "OpenFraud plugin for OpenCode - fraud detection tools",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "@opencode-ai/plugin": "^1.4.3",
+    "zod": "^3.23.8"
+  }
+}

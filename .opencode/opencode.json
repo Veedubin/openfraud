@@ -1,0 +1,54 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "_comment": "Example OpenCode configuration for OpenFraud. This file shows how to register the OpenFraud plugin alongside other MCP servers.",
+  "mcp": {
+    "sequential-thinking": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "enabled": true
+    },
+    "super-memory": {
+      "type": "local",
+      "command": ["uv", "run", "super-memory"],
+      "enabled": true
+    },
+    "duckdb": {
+      "type": "local",
+      "command": ["uvx", "mcp-server-motherduck", "--db-path", ":memory:", "--read-write", "--allow-switch-databases"],
+      "enabled": true
+    },
+    "json-mcp": {
+      "type": "local",
+      "command": ["npx", "-y", "@sylphlab/tools-json-mcp"],
+      "enabled": true
+    },
+    "searxng": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-searxng"],
+      "environment": { "SEARXNG_URL": "http://localhost:8080" },
+      "enabled": true
+    },
+    "mcp-memgraph": {
+      "type": "local",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-i",
+        "--network",
+        "openfraud_default",
+        "-e",
+        "MCP_TRANSPORT=stdio",
+        "-e",
+        "MEMGRAPH_URL=bolt://openfraud_memgraph:7687",
+        "mcp-memgraph:latest"
+      ],
+      "enabled": true
+    }
+  },
+  "plugin": [
+    "@franlol/opencode-md-table-formatter@latest",
+    "file:///absolute/path/to/boomerang-opencode/dist",
+    "file:///absolute/path/to/openfraud/.opencode/plugins/openfraud/dist"
+  ]
+}

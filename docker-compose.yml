@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  # Memgraph Database
+  memgraph:
+    image: memgraph/memgraph-mage:latest
+    container_name: openfraud_memgraph
+    ports:
+      - "7687:7687"  # Bolt protocol
+      - "7444:7444"  # WebSocket
+    volumes:
+      - memgraph_data:/var/lib/memgraph
+    environment:
+      - MEMGRAPH_USERNAME=""
+      - MEMGRAPH_PASSWORD=""
+    networks:
+      - openfraud_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "7687"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Memgraph Lab (Web UI)
+  memgraph-lab:
+    image: memgraph/lab:latest
+    container_name: openfraud_lab
+    ports:
+      - "3000:3000"
+    environment:
+      - QUICK_CONNECT_MG_HOST=memgraph
+      - QUICK_CONNECT_MG_PORT=7687
+    networks:
+      - openfraud_network
+    depends_on:
+      memgraph:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # SearXNG - Privacy-respecting metasearch engine
+  searxng:
+    image: searxng/searxng:latest
+    container_name: openfraud_searxng
+    ports:
+      - "8080:8080"
+    volumes:
+      - searxng_data:/etc/searxng
+    environment:
+      - SEARXNG_BASE_URL=http://localhost:8080/
+      - SEARXNG_SECRET_KEY=${SEARXNG_SECRET_KEY:-openfraud_secret_key_change_me}
+    networks:
+      - openfraud_network
+    restart: unless-stopped
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+
+  # Redis for SearXNG
+  redis:
+    image: redis:alpine
+    container_name: openfraud_redis
+    volumes:
+      - redis_data:/data
+    networks:
+      - openfraud_network
+    restart: unless-stopped
+    command: redis-server --save "" --appendonly "no"
+
+volumes:
+  memgraph_data:
+    driver: local
+  searxng_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  openfraud_network:
+    driver: bridge
+    name: openfraud_default
